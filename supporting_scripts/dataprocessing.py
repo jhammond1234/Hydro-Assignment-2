@@ -115,6 +115,7 @@ def processSNOTEL(site, stateab):
 
     df = WYsitedf.copy()
     
+    #add statistical columns
     df['min'] = WYsitedf.min(axis=1)
     df['Q10'] = WYsitedf.quantile(0.10, axis=1)
     df['Q25'] = WYsitedf.quantile(0.25, axis=1)
