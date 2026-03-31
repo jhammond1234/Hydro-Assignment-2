@@ -115,15 +115,20 @@ def processSNOTEL(site, stateab):
 
     df = WYsitedf.copy()
     
+    # Drop M and D before calculating stats
+    year_cols = [col for col in WYsitedf.columns if col.endswith('_SWE_in')]
+    WYsitedf_stats = WYsitedf[year_cols]
+    print(WYsitedf_stats.columns.tolist())
+
     #add statistical columns
-    df['min'] = WYsitedf.min(axis=1)
-    df['Q10'] = WYsitedf.quantile(0.10, axis=1)
-    df['Q25'] = WYsitedf.quantile(0.25, axis=1)
-    df['mean'] = WYsitedf.mean(axis=1)
-    df['median'] = WYsitedf.median(axis=1)
-    df['Q75'] = WYsitedf.quantile(0.75, axis=1)
-    df['Q90'] = WYsitedf.quantile(0.90, axis=1)
-    df['max'] = WYsitedf.max(axis=1)
+    df['min'] = WYsitedf_stats.min(axis=1)
+    df['Q10'] = WYsitedf_stats.quantile(0.10, axis=1)
+    df['Q25'] = WYsitedf_stats.quantile(0.25, axis=1)
+    df['mean'] = WYsitedf_stats.mean(axis=1)
+    df['median'] = WYsitedf_stats.median(axis=1)
+    df['Q75'] = WYsitedf_stats.quantile(0.75, axis=1)
+    df['Q90'] = WYsitedf_stats.quantile(0.90, axis=1)
+    df['max'] = WYsitedf_stats.max(axis=1)
 
     df['date'] = pd.to_datetime(dict(year = 2023, month = df['M'], day = df['D'])) 
     df['M-D'] = df['date'].dt.strftime('%m-%d')
